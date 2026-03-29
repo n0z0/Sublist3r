@@ -638,7 +638,11 @@ class DNSdumpster(enumratorBaseThreaded):
 
     def get_csrftoken(self, resp):
         csrf_regex = re.compile('<input type="hidden" name="csrfmiddlewaretoken" value="(.*?)">', re.S)
-        token = csrf_regex.findall(resp)[0]
+        matches = csrf_regex.findall(resp)
+        if matches:
+            token = matches[0]
+        else:
+            return []
         return token.strip()
 
     def enumerate(self):
